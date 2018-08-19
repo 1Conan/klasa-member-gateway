@@ -57,7 +57,7 @@ class MemberGateway extends GatewayStorage {
 	 * @returns {?external:Settings}
 	 */
 	get(id) {
-		const [guildID, memberID] = typeof id === 'string' ? id.split('.') : id;
+		const [guildID, memberID] = typeof id === 'string' ? id.split('-') : id;
 
 		const guild = this.client.guilds.get(guildID);
 		if (guild) {
@@ -76,11 +76,11 @@ class MemberGateway extends GatewayStorage {
 	 * @returns {external:Settings}
 	 */
 	create(id, data = {}) {
-		const [guildID, memberID] = typeof id === 'string' ? id.split('.') : id;
+		const [guildID, memberID] = typeof id === 'string' ? id.split('-') : id;
 		const entry = this.get([guildID, memberID]);
 		if (entry) return entry;
 
-		const settings = new this.Settings(this, { id: `${guildID}.${memberID}`, ...data });
+		const settings = new this.Settings(this, { id: `${guildID}-${memberID}`, ...data });
 		if (this._synced) settings.sync();
 		return settings;
 	}
